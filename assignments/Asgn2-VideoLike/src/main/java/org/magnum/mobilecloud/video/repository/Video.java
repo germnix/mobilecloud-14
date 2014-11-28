@@ -1,5 +1,14 @@
 package org.magnum.mobilecloud.video.repository;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.google.common.base.Objects;
 
 /**
@@ -16,14 +25,20 @@ import com.google.common.base.Objects;
  * 
  * @author mitchell
  */
+@Entity
 public class Video {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private String name;
 	private String url;
 	private long duration;
-	private long likes;
+	private long likes;	
+	
+	@ElementCollection
+	private Set<String> usersLiked;
 	
 	public Video() {
 	}
@@ -34,6 +49,7 @@ public class Video {
 		this.url = url;
 		this.duration = duration;
 		this.likes = likes;
+		this.usersLiked= new HashSet<String>();
 	}
 
 	public String getName() {
@@ -76,6 +92,14 @@ public class Video {
 		this.likes = likes;
 	}
 	
+	public Set<String> getUsersLiked() {
+		return usersLiked;
+	}
+
+	public void setUsersLiked(Set<String> usersLiked) {
+		this.usersLiked = usersLiked;
+	}
+
 	/**
 	 * Two Videos will generate the same hashcode if they have exactly the same
 	 * values for their name, url, and duration.
@@ -104,5 +128,14 @@ public class Video {
 			return false;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Video [id=" + id + ", name=" + name + ", url=" + url
+				+ ", duration=" + duration + ", likes=" + likes
+				+ ", usersLiked=" + usersLiked + "]";
+	}
+	
+	
 
 }
